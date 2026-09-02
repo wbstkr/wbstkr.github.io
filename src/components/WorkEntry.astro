@@ -1,0 +1,74 @@
+---
+interface Props {
+    position: string;
+    company: string;
+    year: string;
+    isCurrent?: boolean;
+}
+
+const { position, company, year, isCurrent = false } = Astro.props;
+---
+
+<article class="job">
+    <div class="job-header">
+        <h3 class="position">{position}</h3>
+        <span class={`year ${isCurrent ? "current" : ""}`}>{year}</span>
+    </div>
+    <div class="company">{company}</div>
+    <ul class="job-bullets">
+        <slot />
+    </ul>
+</article>
+
+<style>
+    .job {
+        margin-bottom: 2rem;
+    }
+
+    .job-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 1rem;
+    }
+
+    .position {
+        margin: 0;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--color-text);
+    }
+
+    .company {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--color-text);
+        margin: 0.15rem 0 0.5rem 0;
+    }
+
+    .year {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--color-text);
+        white-space: nowrap;
+    }
+
+    .year.current {
+        color: var(--color-bg);
+        background: var(--color-accent);
+        padding: 0.1rem 0.4rem;
+        border: 1px solid var(--color-border);
+        border-radius: 2px;
+    }
+
+    .job-bullets {
+        margin: 0.25rem 0 0 1.2rem;
+        padding: 0;
+        color: var(--color-text);
+        font-size: 0.95rem;
+    }
+
+    :global(.job-bullets li) {
+        margin-bottom: 0.35rem;
+    }
+</style>

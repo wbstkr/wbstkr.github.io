@@ -1,0 +1,114 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import WorkEntry from "../components/WorkEntry.astro";
+---
+
+<Layout title="Omar Faruque">
+	<header class="hero">
+		<h1>Omar Faruque</h1>
+		<p class="tagline">
+			STEM student bridging clinical data systems and backend software
+			engineering.
+		</p>
+		<p class="description">
+			Hunter College biochemistry student with experience managing
+			high-throughput data workflows and implementing performant data
+			structures and algorithmic simulations in Java and Kotlin.
+		</p>
+	</header>
+
+	<hr class="divider" />
+
+	<section id="projects" class="section">
+		<h2>Projects</h2>
+
+		<ProjectCard
+			title="Spatial QuadTree Simulation"
+			description="Implemented a 2D spatial partitioning Quad Tree data structure to optimize entity queries and collision checks, reducing time complexity from O(n²) to O(n log n)."
+			repoUrl="https://github.com/wbstkr/quadtree"
+		/>
+
+		<ProjectCard
+			title="Wave Function Collapse Generator"
+			description="Developed a constraint-satisfaction procedural pattern generator implementing strict tile adjacency and entropy calculation mechanisms."
+			repoUrl="https://github.com/wbstkr/wavefunctioncollapse"
+		/>
+	</section>
+
+	<hr class="divider" />
+
+	<section id="work" class="section">
+		<h2>Work</h2>
+
+		<WorkEntry
+			position="Medical Assistant & Clinical Data Specialist"
+			company="The Dermatology Specialists"
+			year="[CURRENT]"
+			isCurrent={true}
+		>
+			<li>
+				Manage high-volume data workflows and clinical documentation for
+				40–60 patients daily, ensuring 100% data integrity within
+				eClinicalWorks.
+			</li>
+			<li>
+				Execute real-time operational data synchronization and backend
+				record management during rapid clinical procedures.
+			</li>
+		</WorkEntry>
+
+		<WorkEntry
+			position="Clinical Operations Intern"
+			company="Park Avenue LASEK"
+			year="2024"
+		>
+			<li>
+				Operated advanced diagnostic hardware to capture precise visual
+				data for 20–30 daily patients.
+			</li>
+			<li>
+				Managed patient databases and digital prescription workflows
+				using Veradigm.
+			</li>
+		</WorkEntry>
+	</section>
+</Layout>
+
+<style>
+	.hero h1 {
+		font-size: 2.4rem;
+		font-weight: 800;
+		margin: 0 0 0.4rem 0;
+		letter-spacing: -0.03em;
+		color: var(--color-text);
+	}
+
+	.tagline {
+		font-size: 1.15rem;
+		font-weight: 600;
+		color: var(--color-text);
+		margin: 0 0 0.6rem 0;
+	}
+
+	.description {
+		font-size: 0.95rem;
+		color: var(--color-text);
+		margin: 0;
+		line-height: 1.6;
+	}
+
+	.divider {
+		border: none;
+		border-top: 2px solid var(--color-border);
+		margin: 2.5rem 0;
+	}
+
+	.section h2 {
+		font-size: 1.6rem;
+		font-weight: 800;
+		letter-spacing: -0.02em;
+		margin: 0 0 1.25rem 0;
+		color: var(--color-text);
+	}
+</style>

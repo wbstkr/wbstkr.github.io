@@ -1,0 +1,64 @@
+---
+interface Props {
+    title: string;
+    description: string;
+    repoUrl: string;
+}
+
+const { title, description, repoUrl } = Astro.props;
+---
+
+<div class="project-card">
+    <h3>{title}</h3>
+    <p>{description}</p>
+    <a href={repoUrl} target="_blank" rel="noreferrer">View Repository &rarr;</a
+    >
+</div>
+
+<style>
+    .project-card {
+        border: 2px solid var(--color-border);
+        padding: 1.25rem;
+        margin-bottom: 1.25rem;
+        background: var(--color-bg);
+        transition:
+            transform 0.15s ease,
+            box-shadow 0.15s ease;
+    }
+
+    .project-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 4px 4px 0px var(--color-accent);
+    }
+
+    h3 {
+        margin: 0 0 0.4rem 0;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--color-text);
+    }
+
+    p {
+        margin: 0 0 0.85rem 0;
+        color: var(--color-text);
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    a {
+        color: var(--color-text);
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 0.9rem;
+        border-bottom: 2px solid var(--color-accent);
+        padding-bottom: 1px;
+        transition:
+            background 0.15s ease,
+            color 0.15s ease;
+    }
+
+    a:hover {
+        background: var(--color-accent);
+        color: var(--color-bg);
+    }
+</style>
