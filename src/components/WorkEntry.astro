@@ -2,27 +2,108 @@
 interface Props {
     position: string;
     company: string;
-    year: string;
-    isCurrent?: boolean;
+    startDate: string | Date;
+    endDate?: string | Date;
+    bullets?: string[];
+    printBullets?: string[];
 }
 
-const { position, company, year, isCurrent = false } = Astro.props;
+const {
+    position,
+    company,
+    startDate,
+    endDate,
+    bullets = [],
+    printBullets = [],
+} = Astro.props;
+
+const start = typeof startDate === "string" ? new Date(startDate) : startDate;
+const end = endDate
+    ? typeof endDate === "string"
+        ? new Date(endDate)
+        : endDate
+    : null;
+const isCurrent = !end;
+
+const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+];
+
+const startMonth = monthNames[start.getUTCMonth()];
+const startYear = start.getUTCFullYear();
+
+// Print label: e.g. "March 2025 - Present" or "June 2024 - December 2024"
+const endPrintText = end
+    ? `${monthNames[end.getUTCMonth()]} ${end.getUTCFullYear()}`
+    : "Present";
+const printDate = `${startMonth} ${startYear} - ${endPrintText}`;
+
+// Screen label: [CURRENT] or numeric year/range
+let screenDate = "[CURRENT]";
+if (end) {
+    const endYear = end.getUTCFullYear();
+    screenDate =
+        startYear === endYear ? `${startYear}` : `${startYear} - ${endYear}`;
+}
 ---
 
-<article class="job">
-    <div class="job-header">
+<div class="job">
+    <!-- Screen Header: Position on Left, [CURRENT] / Year on Right -->
+    <div class="job-header screen-only">
         <h3 class="position">{position}</h3>
-        <span class={`year ${isCurrent ? "current" : ""}`}>{year}</span>
+        <span class:list={["year", { current: isCurrent }]}>
+            {screenDate}
+        </span>
     </div>
-    <div class="company">{company}</div>
-    <ul class="job-bullets">
-        <slot />
+
+    <div class="company screen-only">{company}</div>
+
+    <!-- Screen Bullets -->
+    <ul class="job-bullets screen-only">
+        {bullets.map((bullet) => <li>{bullet}</li>)}
     </ul>
-</article>
+
+    <!-- Print View Header: Position | Company | Date Range -->
+    <div class="print-job-header print-only">
+        <h3 class="print-title">
+            <span class="position-title">{position}</span>
+            <span class="pipe">|</span>
+            <span class="company-name">{company}</span>
+            <span class="pipe">|</span>
+            <span class="date-range">{printDate}</span>
+        </h3>
+    </div>
+
+    <!-- Print Bullets: Screen bullets + extra printBullets -->
+    <ul class="job-bullets print-bullets print-only">
+        {bullets.map((bullet) => <li>{bullet}</li>)}
+        {printBullets.map((bullet) => <li>{bullet}</li>)}
+    </ul>
+</div>
 
 <style>
     .job {
-        margin-bottom: 2rem;
+        padding: 1.25rem;
+        margin-bottom: 1.5rem;
+        border: 2px solid transparent;
+        background: var(--color-bg);
+        transition: border-color 0.15s ease;
+    }
+
+    /* Simple accent outline on hover */
+    .job:hover {
+        border-color: var(--color-accent);
     }
 
     .job-header {
@@ -30,45 +111,87 @@ const { position, company, year, isCurrent = false } = Astro.props;
         justify-content: space-between;
         align-items: baseline;
         gap: 1rem;
+        margin-bottom: 0.25rem;
     }
 
     .position {
-        margin: 0;
         font-size: 1.15rem;
         font-weight: 700;
+        margin: 0;
         color: var(--color-text);
-    }
-
-    .company {
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: var(--color-text);
-        margin: 0.15rem 0 0.5rem 0;
     }
 
     .year {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         font-weight: 700;
         color: var(--color-text);
         white-space: nowrap;
+        letter-spacing: 0.04em;
     }
 
+    /* Highlighted [CURRENT] Badge */
     .year.current {
-        color: var(--color-bg);
         background: var(--color-accent);
-        padding: 0.1rem 0.4rem;
-        border: 1px solid var(--color-border);
-        border-radius: 2px;
+        color: var(--color-bg);
+        border: 1.5px solid var(--color-accent);
+        padding: 0.15rem 0.5rem;
+        font-size: 0.72rem;
+        font-weight: 800;
+        border-radius: 0;
+    }
+
+    .company {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--color-text);
+        opacity: 0.85;
+        margin-bottom: 0.75rem;
     }
 
     .job-bullets {
-        margin: 0.25rem 0 0 1.2rem;
+        margin: 0 0 0 1.25rem;
         padding: 0;
-        color: var(--color-text);
-        font-size: 0.95rem;
     }
 
-    :global(.job-bullets li) {
-        margin-bottom: 0.35rem;
+    .job-bullets li {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 0.4rem;
+        color: var(--color-text);
+    }
+
+    /* Print Layout Overrides */
+    @media print {
+        .job {
+            border: none !important;
+            padding: 0 !important;
+            margin: 0 0 6pt 0 !important;
+            background: transparent !important;
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        .print-job-header {
+            margin-bottom: 1pt !important;
+        }
+
+        .print-title {
+            font-size: 9.5pt !important;
+            margin: 0 !important;
+            color: #000000 !important;
+        }
+
+        .position-title {
+            font-weight: 700 !important;
+        }
+
+        .company-name {
+            font-weight: 400 !important;
+        }
+
+        .date-range {
+            font-weight: 400 !important;
+        }
+
     }
 </style>

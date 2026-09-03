@@ -1,74 +1,92 @@
 ---
-
+import { cleanPhone, contactInfo } from "../data/contact";
 ---
 
-<footer id="contact" class="footer">
+<footer id="contact" class="footer screen-only">
     <div class="footer-inner">
-        <div class="links">
-            <a href="https://github.com/wbstkr" target="_blank" rel="noreferrer"
-                >GitHub</a
-            >
+        <!-- Top row: Email • Phone # • Link1 • Link2 ... -->
+        <div class="footer-line links-line">
+            <a href={`mailto:${contactInfo.email}`}>Email</a>
             <span class="dot">&bull;</span>
-            <a
-                href="https://linkedin.com/in/wbstkr"
-                target="_blank"
-                rel="noreferrer">LinkedIn</a
-            >
-            <span class="dot">&bull;</span>
-            <a href="mailto:ofaruque245@gmail.com">Email</a>
+            <a href={`tel:${cleanPhone}`}>{contactInfo.phone}</a>
+            {
+                contactInfo.links.map((link) => (
+                    <>
+                        <span class="dot">&bull;</span>
+                        <a
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            {link.simple}
+                        </a>
+                    </>
+                ))
+            }
         </div>
-        <div class="meta">
-            <p>Omar Faruque &bull; NYC &bull; U.S. Citizen</p>
+
+        <!-- Bottom row: Name • U.S. Citizen • Location -->
+        <div class="footer-line meta-line">
+            <span>{contactInfo.name}</span>
+            <span class="dot">&bull;</span>
+            <span>{contactInfo.citizenship}</span>
+            <span class="dot">&bull;</span>
+            <span>{contactInfo.location}</span>
         </div>
     </div>
 </footer>
 
 <style>
     .footer {
+        width: 100%;
+        margin-top: 2rem;
         border-top: 2px solid var(--color-border);
-        background: var(--color-bg);
-        padding: 3rem 1.5rem;
-        color: var(--color-text);
+        padding: 3rem 0 4rem 0;
+        display: flex;
+        justify-content: center;
     }
 
     .footer-inner {
-        max-width: 680px;
-        margin: 0 auto;
         display: flex;
         flex-direction: column;
         align-items: center;
-        text-align: center;
         gap: 0.85rem;
     }
 
-    .links {
+    .footer-line {
         display: flex;
         align-items: center;
-        gap: 0.75rem;
+        justify-content: center;
+        gap: 0.85rem;
     }
 
-    .links a {
+    /* Top line: Bold, prominent links without underlines */
+    .links-line {
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+    }
+
+    .links-line a {
         color: var(--color-text);
         text-decoration: none;
-        font-weight: 700;
-        font-size: 0.95rem;
         transition: color 0.15s ease;
     }
 
-    .links a:hover {
+    .links-line a:hover {
         color: var(--color-accent);
-        text-decoration: underline;
+    }
+
+    /* Bottom line: Subtle metadata */
+    .meta-line {
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: var(--color-text);
     }
 
     .dot {
-        color: var(--color-text);
-        font-weight: 700;
-    }
-
-    .meta p {
-        margin: 0;
-        font-size: 0.85rem;
-        font-weight: 500;
+        user-select: none;
+        font-size: 0.8rem;
         color: var(--color-text);
     }
 </style>

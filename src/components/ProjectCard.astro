@@ -1,64 +1,181 @@
 ---
 interface Props {
     title: string;
+    tags?: string[];
+    repoUrl?: string;
     description: string;
-    repoUrl: string;
+    printBullets?: string[];
 }
 
-const { title, description, repoUrl } = Astro.props;
+const {
+    title,
+    tags = [],
+    description,
+    repoUrl,
+    printBullets = [],
+} = Astro.props;
+
+const formattedTags = tags.join(", ");
 ---
 
 <div class="project-card">
-    <h3>{title}</h3>
-    <p>{description}</p>
-    <a href={repoUrl} target="_blank" rel="noreferrer">View Repository &rarr;</a
-    >
+    <!-- Screen Header: Title Only -->
+    <h3 class="card-title screen-only">{title}</h3>
+
+    <!-- Screen View Description -->
+    <p class="description screen-only">{description}</p>
+
+    <!-- Screen Footer: Left-aligned Chips + Right-aligned Highlighted Repo Button -->
+    <div class="card-footer screen-only">
+        <div class="tag-chips">
+            {tags.map((tag) => <span class="chip">{tag}</span>)}
+        </div>
+
+        {
+            repoUrl && (
+                <a
+                    href={repoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="repo-link"
+                >
+                    View Repository &rarr;
+                </a>
+            )
+        }
+    </div>
+
+    <!-- Print View Header: Flattened Title | Tag1, Tag2 -->
+    <div class="print-project-header print-only">
+        <h3 class="print-title">
+            {title}
+            {
+                tags.length > 0 && (
+                    <span class="pipe">|</span>
+                    <span class="print-tags">
+                        {formattedTags}
+                    </span>
+                )
+            }
+        </h3>
+    </div>
+
+    <!-- Print View Bullets: Original description + extra printBullets -->
+    <ul class="print-bullets print-only">
+        <li>{description}</li>
+        {printBullets.map((bullet) => <li>{bullet}</li>)}
+    </ul>
 </div>
 
 <style>
     .project-card {
         border: 2px solid var(--color-border);
         padding: 1.25rem;
-        margin-bottom: 1.25rem;
+        margin-bottom: 1.75rem;
         background: var(--color-bg);
+        box-shadow: none;
+        transform: translate(0, 0);
         transition:
             transform 0.15s ease,
             box-shadow 0.15s ease;
     }
 
     .project-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 4px 4px 0px var(--color-accent);
+        transform: translate(-3px, -3px);
+        box-shadow: 5px 5px 0 var(--color-accent);
     }
 
-    h3 {
-        margin: 0 0 0.4rem 0;
-        font-size: 1.2rem;
+    .card-title {
+        font-size: 1.25rem;
         font-weight: 700;
+        margin: 0 0 0.75rem 0;
         color: var(--color-text);
     }
 
-    p {
-        margin: 0 0 0.85rem 0;
-        color: var(--color-text);
+    .description {
         font-size: 0.95rem;
-        line-height: 1.5;
+        line-height: 1.6;
+        margin: 0 0 1.25rem 0;
+        color: var(--color-text);
     }
 
-    a {
-        color: var(--color-text);
-        text-decoration: none;
+    .card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: auto;
+    }
+
+    .tag-chips {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.35rem;
+    }
+
+    .chip {
+        font-size: 0.65rem;
         font-weight: 700;
-        font-size: 0.9rem;
-        border-bottom: 2px solid var(--color-accent);
-        padding-bottom: 1px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        padding: 0.15rem 0.45rem;
+        line-height: 1.2;
+        border-radius: 0;
+        border: 1.5px solid var(--color-accent);
+        color: var(--color-accent);
+        background: transparent;
+        white-space: nowrap;
+    }
+
+    /* Hyperlink by default, highlighted blue box on hover */
+    .repo-link {
+        margin-left: auto;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--color-accent);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        padding: 0.25rem 0.5rem;
+        border: 1.5px solid transparent;
+        white-space: nowrap;
         transition:
             background 0.15s ease,
-            color 0.15s ease;
+            color 0.15s ease,
+            border-color 0.15s ease;
     }
 
-    a:hover {
+    .repo-link:hover {
         background: var(--color-accent);
         color: var(--color-bg);
+        border-color: var(--color-accent);
+        text-decoration: none;
+    }
+
+    /* Print Layout Overrides */
+    @media print {
+        .project-card {
+            border: none !important;
+            padding: 0 !important;
+            margin: 0 0 6pt 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            transform: none !important;
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        .print-title {
+            font-size: 9.5pt !important;
+            font-weight: 700 !important;
+            margin: 0 0 2pt 0 !important;
+            color: #000000 !important;
+        }
+
+        .print-tags {
+            font-weight: 400 !important;
+        }
+
     }
 </style>

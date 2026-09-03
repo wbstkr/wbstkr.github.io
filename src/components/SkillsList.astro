@@ -1,0 +1,60 @@
+---
+interface Props {
+    skills: string[][];
+}
+
+const { skills = [] } = Astro.props;
+---
+
+<div class="skills-list">
+    {
+        skills.map((group) => {
+            const [category, ...items] = group;
+            return (
+                <p class="skill-group">
+                    <strong class="category-name">{category}:</strong>{" "}
+                    <span class="skills-items">{items.join(", ")}</span>
+                </p>
+            );
+        })
+    }
+</div>
+
+<style>
+    .skills-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .skill-group {
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: var(--color-text);
+    }
+
+    .category-name {
+        font-weight: 700;
+    }
+
+    @media print {
+        .skills-list {
+            gap: 1pt !important;
+            margin-bottom: 6pt !important;
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        .skill-group {
+            font-size: 9pt !important;
+            line-height: 1.35 !important;
+            color: #000000 !important;
+        }
+
+        .category-name {
+            font-weight: 700 !important;
+        }
+    }
+</style>

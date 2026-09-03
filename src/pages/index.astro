@@ -1,85 +1,170 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import ResumeHeader from "../components/ResumeHeader.astro";
+import SkillsList from "../components/SkillsList.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 import WorkEntry from "../components/WorkEntry.astro";
+import EducationEntry from "../components/EducationEntry.astro";
 ---
 
 <Layout title="Omar Faruque">
 	<header class="hero">
-		<h1>Omar Faruque</h1>
-		<p class="tagline">
+		<div class="hero-header">
+			<h1>Omar Faruque</h1>
+			<button onclick="window.print()" class="print-btn hide-on-print">
+				Print Resume
+			</button>
+		</div>
+
+		<!-- Contact Banner -->
+		<ResumeHeader />
+
+		<!-- Tagline -->
+		<p class="tagline screen-only">
 			STEM student bridging clinical data systems and backend software
 			engineering.
 		</p>
-		<p class="description">
+
+		<!-- Concise Description -->
+		<p class="summary-concise screen-only">
 			Hunter College biochemistry student with experience managing
 			high-throughput data workflows and implementing performant data
 			structures and algorithmic simulations in Java and Kotlin.
 		</p>
+
+		<!-- Professional Summary -->
+		<div class="print-only">
+			<h2 class="print-section-title">Professional Summary</h2>
+			<p class="summary">
+				Hunter College STEM student transitioning clinical database
+				experience into software engineering, specializing in backend
+				infrastructure and algorithms. Managing high-volume data
+				workflows for 60+ daily patients built a foundation in system
+				optimization and strict data integrity. Leveraging a strong
+				quantitative background and foundational programming in Java,
+				Kotlin, and Python to build high-performance data structures and
+				scalable backend logic.
+			</p>
+		</div>
 	</header>
 
-	<hr class="divider" />
+	<hr class="divider hide-on-print" />
 
+	<!-- Skills Section -->
+	<section class="section">
+		<h2 class="section-title">Skills</h2>
+		<SkillsList
+			skills={[
+				[
+					"Languages & Tech",
+					"Java",
+					"Kotlin",
+					"Python",
+					"C#",
+					"Git/GitHub",
+					"AI-Assisted Development",
+				],
+				[
+					"Core Competencies",
+					"Data Structures",
+					"Algorithms",
+					"Systems Optimization",
+					"Backend Architecture",
+				],
+				[
+					"Systems & Software",
+					"eClinicalWorks",
+					"Veradigm",
+					"ZOHO",
+					"Relational Databases",
+				],
+			]}
+		/>
+	</section>
+
+	<hr class="divider hide-on-print" />
+
+	<!-- Projects Section -->
 	<section id="projects" class="section">
-		<h2>Projects</h2>
+		<h2 class="section-title">Projects</h2>
 
 		<ProjectCard
 			title="Spatial QuadTree Simulation"
-			description="Implemented a 2D spatial partitioning Quad Tree data structure to optimize entity queries and collision checks, reducing time complexity from O(n²) to O(n log n)."
+			tags={["Kotlin", "Algorithms"]}
 			repoUrl="https://github.com/wbstkr/quadtree"
+			description="Implemented a 2D spatial partitioning Quad Tree data structure to optimize entity queries and collision checks, reducing time complexity from O(n²) to O(n log n)."
+			printBullets={[
+				"Structured dynamic node insertion and spatial boundary logic, demonstrating an understanding of high-performance rendering architectures and systemic scale.",
+			]}
 		/>
 
 		<ProjectCard
 			title="Wave Function Collapse Generator"
-			description="Developed a constraint-satisfaction procedural pattern generator implementing strict tile adjacency and entropy calculation mechanisms."
+			tags={["Kotlin", "Algorithms"]}
 			repoUrl="https://github.com/wbstkr/wavefunctioncollapse"
+			description="Developed a constraint-satisfaction algorithm to generate complex procedural patterns, demonstrating advanced systemic logic and data manipulation."
+			printBullets={[
+				"Designed strict adjacency rules and entropy calculation mechanisms for high-fidelity spatial resolution.",
+			]}
 		/>
 	</section>
 
-	<hr class="divider" />
+	<hr class="divider hide-on-print" />
 
+	<!-- Work Section -->
 	<section id="work" class="section">
-		<h2>Work</h2>
+		<h2 class="section-title">Experience</h2>
 
 		<WorkEntry
 			position="Medical Assistant & Clinical Data Specialist"
 			company="The Dermatology Specialists"
-			year="[CURRENT]"
-			isCurrent={true}
-		>
-			<li>
-				Manage high-volume data workflows and clinical documentation for
-				40–60 patients daily, ensuring 100% data integrity within
-				eClinicalWorks.
-			</li>
-			<li>
-				Execute real-time operational data synchronization and backend
-				record management during rapid clinical procedures.
-			</li>
-		</WorkEntry>
+			startDate="2025-03"
+			bullets={[
+				"Manage high-volume data workflows and clinical documentation for 40-60 patients daily, ensuring 100% data integrity within the eClinicalWorks database ecosystem.",
+				"Execute real-time operational data synchronization and backend record management during rapid-paced procedural workflows.",
+			]}
+		/>
 
 		<WorkEntry
 			position="Clinical Operations Intern"
 			company="Park Avenue LASEK"
-			year="2024"
-		>
-			<li>
-				Operated advanced diagnostic hardware to capture precise visual
-				data for 20–30 daily patients.
-			</li>
-			<li>
-				Managed patient databases and digital prescription workflows
-				using Veradigm.
-			</li>
-		</WorkEntry>
+			startDate="2024-06"
+			endDate="2024-12"
+			bullets={[
+				"Operated advanced diagnostic hardware to capture precise visual data for 20-30 daily patients, ensuring high-fidelity inputs for backend systems.",
+				"Managed digital workflow and patient databases, utilizing Veradigm to execute accurate electronic prescription management and structured data entry.",
+			]}
+		/>
+	</section>
+
+	<hr class="divider hide-on-print" />
+
+	<!-- Education Section -->
+	<section id="education" class="section">
+		<h2 class="section-title">Education</h2>
+
+		<EducationEntry
+			school="Hunter College, CUNY"
+			info="Bachelor's Degree"
+		/>
+
+		<EducationEntry school="Stuyvesant High School" printOnly={true} />
 	</section>
 </Layout>
 
 <style>
+	.hero-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 1rem;
+		margin-bottom: 0.4rem;
+	}
+
 	.hero h1 {
 		font-size: 2.4rem;
 		font-weight: 800;
-		margin: 0 0 0.4rem 0;
+		margin: 0;
 		letter-spacing: -0.03em;
 		color: var(--color-text);
 	}
@@ -91,11 +176,31 @@ import WorkEntry from "../components/WorkEntry.astro";
 		margin: 0 0 0.6rem 0;
 	}
 
-	.description {
+	.summary-concise {
 		font-size: 0.95rem;
 		color: var(--color-text);
 		margin: 0;
 		line-height: 1.6;
+	}
+
+	.print-btn {
+		background: var(--color-bg);
+		color: var(--color-text);
+		border: 2px solid var(--color-border);
+		padding: 0.35rem 0.75rem;
+		font-size: 0.85rem;
+		font-weight: 700;
+		cursor: pointer;
+		transition:
+			background 0.15s ease,
+			color 0.15s ease;
+		white-space: nowrap;
+	}
+
+	.print-btn:hover {
+		background: var(--color-accent);
+		color: var(--color-bg);
+		border-color: var(--color-accent);
 	}
 
 	.divider {
@@ -104,11 +209,33 @@ import WorkEntry from "../components/WorkEntry.astro";
 		margin: 2.5rem 0;
 	}
 
-	.section h2 {
+	.section-title {
 		font-size: 1.6rem;
 		font-weight: 800;
 		letter-spacing: -0.02em;
 		margin: 0 0 1.25rem 0;
 		color: var(--color-text);
+	}
+
+	.education-entry {
+		margin-bottom: 1.5rem;
+	}
+
+	@media (max-width: 480px) {
+		.hero-header {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 0.5rem;
+		}
+	}
+
+	@media print {
+		.summary {
+			font-size: 9pt !important;
+			line-height: 1.35 !important;
+			color: #000000 !important;
+			margin: 0 0 6pt 0 !important;
+			font-weight: 400 !important;
+		}
 	}
 </style>

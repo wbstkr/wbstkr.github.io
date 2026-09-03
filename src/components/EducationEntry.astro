@@ -1,0 +1,107 @@
+---
+interface Props {
+    school: string;
+    info?: string;
+    printOnly?: boolean;
+}
+
+const { school, info, printOnly = false } = Astro.props;
+---
+
+<div class:list={["education-entry", { "print-entry-only": printOnly }]}>
+    <!-- Screen View -->
+    {
+        !printOnly && (
+            <div class="edu-screen screen-only">
+                <span class="school-name">{school}</span>
+                {info && <span class="edu-info">{info}</span>}
+            </div>
+        )
+    }
+
+    <!-- Print View -->
+    <div class="edu-print print-only">
+        <span class="print-school">{school}</span>
+        {
+            info && (
+                <>
+                    <span class="pipe">|</span>
+                    <span class="print-info">{info}</span>
+                </>
+            )
+        }
+    </div>
+</div>
+
+<style>
+    .education-entry {
+        margin-bottom: 0.75rem;
+    }
+
+    .edu-screen {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 1rem;
+        padding: 0.25rem 0;
+    }
+
+    .school-name {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--color-text);
+    }
+
+    .edu-info {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--color-text);
+        opacity: 0.85;
+        text-align: right;
+    }
+
+    /* When marked print-only, ensure hidden on screen */
+    .print-entry-only {
+        display: none;
+    }
+
+    /* Strict Print Overrides */
+    @media print {
+        .print-entry-only {
+            display: block !important;
+        }
+
+        .education-entry {
+            margin: 0 0 3pt 0 !important;
+            padding: 0 !important;
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        .edu-screen {
+            display: none !important;
+        }
+
+        .edu-print {
+            display: block !important;
+            font-size: 9pt !important;
+            line-height: 1.3 !important;
+            color: #000000 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .print-school {
+            font-size: 9pt !important;
+            font-weight: 700 !important;
+            color: #000000 !important;
+        }
+
+        .print-info {
+            font-size: 9pt !important;
+            font-weight: 400 !important;
+            color: #000000 !important;
+        }
+
+    }
+</style>
