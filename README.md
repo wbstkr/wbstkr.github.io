@@ -4,24 +4,26 @@
 [![GitHub Pages][pages-shield]][pages-url]
 [![Cloudflare][cloudflare-shield]][cloudflare-url]
 
-Personal portfolio, project directory, and technical write-ups.
+Personal portfolio and print-ready resume.
 
 **[View Live Site](https://wbstkr.me)**
 
 ## Architecture & Stack
 
-Built to prioritize lightweight static delivery and a strict zero-JS overhead where possible. 
+Built to prioritize lightweight static delivery with minimal client-side JavaScript.
 
 * **Framework**: [Astro](https://astro.build/) (Static Site Generation)
 * **Styling**: Vanilla CSS with scoped component styles. Themed via global CSS custom properties strictly adhering to a brutalist 3-color palette (`#FFF`, `#000`, `#00F`).
+* **Resume**: Responsive web resume with a dedicated print layout, including a generated professional summary and print-only contact details.
 * **CI/CD**: Automated build and deployment pipeline via GitHub Actions to GitHub Pages.
 
 ## Project Structure
 
 The UI is decoupled into reusable, scoped `.astro` components for modularity and maintainability:
 
-* `src/layouts/Layout.astro` — Base HTML shell, global resets, and CSS custom properties.
-* `src/components/` — Isolated UI elements (`Navbar`, `Footer`, `ProjectCard`, `WorkEntry`).
+* `src/layouts/Layout.astro` — Base HTML shell, global resets, metadata, and screen/print styles.
+* `src/components/` — Isolated UI elements for navigation, contact information, skills, projects, work history, education, and the footer.
+* `src/data/contact.ts` — Shared contact information and external profile links.
 * `src/pages/` — File-based routing for the static build.
 
 ## Local Development
@@ -31,6 +33,12 @@ Standard Astro environment:
 ```sh
 npm install
 npm run dev
+```
+
+Create a production build locally with:
+
+```sh
+npm run build
 ```
 
 ---
